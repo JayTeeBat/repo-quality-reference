@@ -12,6 +12,7 @@ semantic versioning once the first stable release is published.
   repositories.
 - Self-auditing `repo-quality check` CLI.
 - Golden-reference CI, tests, contributor guidance, and security policy.
+- Executable documentation formatting, link-checking, and site-build commands.
 
 ### Changed
 

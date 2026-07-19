@@ -1,0 +1,26 @@
+site_name: Repository Quality Reference
+site_description: Portable quality profiles for Python-first repositories
+repo_url: https://github.com/JayTeeBat/repo-quality-reference
+docs_dir: docs
+site_dir: site
+strict: true
+
+theme:
+  name: mkdocs
+
+nav:
+  - Overview: index.md
+  - Standard: standard.md
+  - Repository Shapes: repository-shapes.md
+  - Quality Gates: quality-gates.md
+  - README and AGENTS: readme-and-agents.md
+  - Repository Lifecycle: lifecycle.md
+  - Adoption: adoption.md
+  - Architecture Decisions:
+      - Index: adr/README.md
+      - Self-Auditing Reference: adr/0001-self-auditing-reference.md
+
+validation:
+  links:
+    anchors: warn
+    unrecognized_links: warn

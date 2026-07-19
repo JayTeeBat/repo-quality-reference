@@ -21,6 +21,9 @@ Install the development environment and verify this repository:
 ```bash
 uv sync --locked --all-groups
 uv run repo-quality check .
+uv run check-docs-format
+uv run check-docs-links
+uv run build-docs
 uv run pytest
 ```
 
@@ -64,6 +67,11 @@ provide fast feedback, while CI runs the authoritative locked gate chain. See
 [Quality Gates](docs/quality-gates.md) for universal, profile-specific, and
 conditional gates.
 
+The documentation commands are installed with the package. They check Markdown
+formatting, validate local links and heading fragments, retry external link
+checks, and build a strict MkDocs site. Known external exceptions can be made
+explicit with repeatable `--exclude-url-prefix` arguments.
+
 ## Repository Layout
 
 ```text
@@ -75,6 +83,7 @@ conditional gates.
 |-- tests/                   # Behavior and conformance tests
 |-- AGENTS.md                # Instructions for coding agents
 |-- CONTRIBUTING.md          # Human contribution workflow
+|-- mkdocs.yml               # Strict documentation-site configuration
 |-- SECURITY.md              # Vulnerability reporting and security boundary
 |-- pyproject.toml           # Package and tool configuration
 |-- repo-quality.toml        # Declared profile and quality contract

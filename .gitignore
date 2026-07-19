@@ -16,6 +16,7 @@ htmlcov/
 # Build output
 build/
 dist/
+site/
 
 # Editors and operating systems
 .idea/
