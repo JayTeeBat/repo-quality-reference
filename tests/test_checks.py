@@ -1,7 +1,12 @@
 from pathlib import Path
 
 from repo_quality.checks import check_repository
-from repo_quality.models import QualityConfig, RepositoryConfig, RepositoryPurpose
+from repo_quality.models import (
+    DocumentationConfig,
+    QualityConfig,
+    RepositoryConfig,
+    RepositoryPurpose,
+)
 
 PYTHON_COMMANDS = (
     "uv run ruff format --check .",
@@ -16,12 +21,18 @@ def config(
     *,
     package_name: str | None = None,
     commands: tuple[str, ...] = PYTHON_COMMANDS,
+    readme_sections: tuple[str, ...] = (),
+    agents_sections: tuple[str, ...] = (),
 ) -> RepositoryConfig:
     return RepositoryConfig(
         schema_version=1,
         purpose=purpose,
         package_name=package_name,
         required_paths=(),
+        documentation=DocumentationConfig(
+            readme_sections=readme_sections,
+            agents_sections=agents_sections,
+        ),
         quality=QualityConfig(
             commands=commands,
             ci_workflow=Path(".github/workflows/quality.yml"),
@@ -31,31 +42,11 @@ def config(
 
 def write_common_docs(root: Path) -> None:
     (root / "README.md").write_text(
-        "\n".join(
-            f"## {section}"
-            for section in (
-                "Purpose",
-                "Quick Start",
-                "Repository Shapes",
-                "Quality Gates",
-                "Repository Layout",
-            )
-        ),
+        "# Widget\n\n## Overview\n\nA useful widget.\n\n## Installation\n\nInstall it.\n",
         encoding="utf-8",
     )
     (root / "AGENTS.md").write_text(
-        "\n".join(
-            f"## {section}"
-            for section in (
-                "Repository Purpose",
-                "Source Of Truth",
-                "Working Agreements",
-                "Quality Gates",
-                "Testing Policy",
-                "Documentation Rules",
-                "Change Control",
-            )
-        ),
+        "# Agent Guidance\n\nUse the documented gates.\n",
         encoding="utf-8",
     )
     (root / ".gitignore").touch()
@@ -157,3 +148,44 @@ def test_broken_internal_markdown_link_is_reported(tmp_path: Path) -> None:
     ]
     assert len(broken_links) == 1
     assert broken_links[0].path == Path("README.md")
+
+
+def test_only_explicitly_declared_sections_are_required(tmp_path: Path) -> None:
+    write_common_docs(tmp_path)
+    (tmp_path / "docs").mkdir()
+    write_workflow(tmp_path, ("check-docs",))
+
+    report = check_repository(
+        tmp_path,
+        config(
+            RepositoryPurpose.DOC_ONLY,
+            commands=("check-docs",),
+            readme_sections=("Installation", "Usage"),
+            agents_sections=("Testing Policy",),
+        ),
+    )
+
+    missing_sections = [finding for finding in report.findings if finding.code == "missing-section"]
+    assert [(finding.path, finding.message) for finding in missing_sections] == [
+        (Path("README.md"), "Required section is missing: Usage"),
+        (Path("AGENTS.md"), "Required section is missing: Testing Policy"),
+    ]
+
+
+def test_empty_required_documents_are_reported(tmp_path: Path) -> None:
+    write_common_docs(tmp_path)
+    (tmp_path / "README.md").write_text(" \n", encoding="utf-8")
+    (tmp_path / "AGENTS.md").write_text("", encoding="utf-8")
+    (tmp_path / "docs").mkdir()
+    write_workflow(tmp_path, ("check-docs",))
+
+    report = check_repository(
+        tmp_path,
+        config(RepositoryPurpose.DOC_ONLY, commands=("check-docs",)),
+    )
+
+    empty_documents = [finding for finding in report.findings if finding.code == "empty-document"]
+    assert [finding.path for finding in empty_documents] == [
+        Path("README.md"),
+        Path("AGENTS.md"),
+    ]

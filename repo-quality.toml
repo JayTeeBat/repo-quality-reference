@@ -12,6 +12,24 @@ required_paths = [
   "examples",
 ]
 
+[documentation]
+readme_sections = [
+  "Purpose",
+  "Quick Start",
+  "Repository Shapes",
+  "Quality Gates",
+  "Repository Layout",
+]
+agents_sections = [
+  "Repository Purpose",
+  "Source Of Truth",
+  "Working Agreements",
+  "Quality Gates",
+  "Testing Policy",
+  "Documentation Rules",
+  "Change Control",
+]
+
 [quality]
 ci_workflow = ".github/workflows/quality.yml"
 commands = [

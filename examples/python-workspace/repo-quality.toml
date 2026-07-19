@@ -4,6 +4,15 @@ schema_version = 1
 purpose = "python-workspace"
 required_paths = ["CONTRIBUTING.md", "SECURITY.md", "docs/adr"]
 
+[documentation]
+readme_sections = ["Purpose", "Package Map", "Development", "Releases"]
+agents_sections = [
+  "Repository Purpose",
+  "Package Boundaries",
+  "Quality Gates",
+  "Testing Policy",
+]
+
 [quality]
 ci_workflow = ".github/workflows/quality.yml"
 commands = [

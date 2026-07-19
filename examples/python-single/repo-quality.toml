@@ -5,6 +5,10 @@ purpose = "python-single"
 package = "example_package"
 required_paths = ["CONTRIBUTING.md", "SECURITY.md"]
 
+[documentation]
+readme_sections = ["Purpose", "Installation", "Usage", "Development"]
+agents_sections = ["Repository Purpose", "Quality Gates", "Testing Policy"]
+
 [quality]
 ci_workflow = ".github/workflows/quality.yml"
 commands = [

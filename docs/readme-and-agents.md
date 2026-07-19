@@ -38,6 +38,14 @@ Exclude:
 The first screen should normally answer: what is this, who is it for, why does
 it matter, and how do I try or verify it?
 
+No README heading title is globally mandatory. A repository MAY opt into exact
+headings when they are part of its local contract:
+
+```toml
+[documentation]
+readme_sections = ["Purpose", "Installation", "Usage"]
+```
+
 ## AGENTS.md
 
 `AGENTS.md` MUST be repository-specific and operational. It is not a place for
@@ -70,6 +78,20 @@ Exclude:
 Nested `AGENTS.md` files MAY refine rules for a package or subsystem. A nested
 file should describe only the narrower context and must not silently weaken root
 quality or security requirements.
+
+Like README headings, exact `AGENTS.md` headings are optional and
+repository-owned:
+
+```toml
+[documentation]
+agents_sections = ["Repository Purpose", "Quality Gates", "Testing Policy"]
+```
+
+The checker verifies declared titles exactly, ignoring case. It does not use
+synonym lists or language-model classification to infer whether prose satisfies
+a topic. When no titles are declared, it verifies that both documents exist,
+are non-empty, and have valid internal links. Reviewers remain responsible for
+content quality.
 
 ## Maintenance Test
 

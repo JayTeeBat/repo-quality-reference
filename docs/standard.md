@@ -96,6 +96,8 @@ conversation.
 ## Conformance
 
 Automated conformance is necessary but incomplete. `repo-quality check` verifies
-structure, required sections, internal Markdown links, declared Python gates,
-and CI parity. Reviewers remain responsible for whether the content is accurate,
-proportionate, and useful.
+structure, non-empty required documents, explicitly declared document sections,
+internal Markdown links, declared Python gates, and CI parity. Exact headings
+are never globally imposed; repositories opt into them through
+`[documentation]`. Reviewers remain responsible for whether the content is
+accurate, proportionate, and useful.

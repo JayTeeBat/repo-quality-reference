@@ -13,22 +13,6 @@ from markdown_it import MarkdownIt
 from repo_quality.models import Finding, Report, RepositoryConfig, RepositoryPurpose
 
 COMMON_PATHS = (Path("README.md"), Path("AGENTS.md"), Path(".gitignore"))
-README_SECTIONS = (
-    "Purpose",
-    "Quick Start",
-    "Repository Shapes",
-    "Quality Gates",
-    "Repository Layout",
-)
-AGENTS_SECTIONS = (
-    "Repository Purpose",
-    "Source Of Truth",
-    "Working Agreements",
-    "Quality Gates",
-    "Testing Policy",
-    "Documentation Rules",
-    "Change Control",
-)
 PYTHON_REQUIRED_COMMANDS = (
     "uv run ruff format --check .",
     "uv run ruff check .",
@@ -48,8 +32,20 @@ def check_repository(root: Path, config: RepositoryConfig) -> Report:
         if not (root / relative_path).exists():
             findings.append(Finding("missing-path", "Required path does not exist", relative_path))
 
-    findings.extend(_check_markdown_sections(root / "README.md", README_SECTIONS))
-    findings.extend(_check_markdown_sections(root / "AGENTS.md", AGENTS_SECTIONS))
+    findings.extend(_check_markdown_document(root / "README.md"))
+    findings.extend(_check_markdown_document(root / "AGENTS.md"))
+    findings.extend(
+        _check_markdown_sections(
+            root / "README.md",
+            config.documentation.readme_sections,
+        )
+    )
+    findings.extend(
+        _check_markdown_sections(
+            root / "AGENTS.md",
+            config.documentation.agents_sections,
+        )
+    )
     findings.extend(_check_markdown_links(root))
 
     if config.purpose is not RepositoryPurpose.DOC_ONLY:
@@ -85,15 +81,27 @@ def _profile_paths(config: RepositoryConfig) -> tuple[Path, ...]:
     )
 
 
-def _check_markdown_sections(path: Path, required: tuple[str, ...]) -> list[Finding]:
+def _check_markdown_document(path: Path) -> list[Finding]:
     if not path.is_file():
         return []
+    if path.read_text(encoding="utf-8").strip():
+        return []
+    return [
+        Finding(
+            "empty-document",
+            "Required Markdown document is empty",
+            Path(path.name),
+        )
+    ]
 
-    headings = {
-        line.lstrip("#").strip().casefold()
-        for line in path.read_text(encoding="utf-8").splitlines()
-        if line.startswith("#")
-    }
+
+def _check_markdown_sections(path: Path, required: tuple[str, ...]) -> list[Finding]:
+    if not path.is_file() or not required:
+        return []
+    if not path.read_text(encoding="utf-8").strip():
+        return []
+
+    headings = _markdown_headings(path)
     relative_path = Path(path.name)
     return [
         Finding(
@@ -104,6 +112,15 @@ def _check_markdown_sections(path: Path, required: tuple[str, ...]) -> list[Find
         for section in required
         if section.casefold() not in headings
     ]
+
+
+def _markdown_headings(path: Path) -> set[str]:
+    tokens = MarkdownIt().parse(path.read_text(encoding="utf-8"))
+    return {
+        tokens[index + 1].content.strip().casefold()
+        for index, token in enumerate(tokens[:-1])
+        if token.type == "heading_open" and tokens[index + 1].type == "inline"
+    }
 
 
 def _check_markdown_links(root: Path) -> list[Finding]:

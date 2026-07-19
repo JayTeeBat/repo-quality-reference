@@ -2,10 +2,17 @@
 
 from repo_quality.checks import check_repository
 from repo_quality.config import ConfigError, load_config
-from repo_quality.models import Finding, Report, RepositoryConfig, RepositoryPurpose
+from repo_quality.models import (
+    DocumentationConfig,
+    Finding,
+    Report,
+    RepositoryConfig,
+    RepositoryPurpose,
+)
 
 __all__ = [
     "ConfigError",
+    "DocumentationConfig",
     "Finding",
     "Report",
     "RepositoryConfig",

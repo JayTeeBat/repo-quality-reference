@@ -6,7 +6,12 @@ import tomllib
 from collections.abc import Mapping, Sequence
 from pathlib import Path, PurePosixPath
 
-from repo_quality.models import QualityConfig, RepositoryConfig, RepositoryPurpose
+from repo_quality.models import (
+    DocumentationConfig,
+    QualityConfig,
+    RepositoryConfig,
+    RepositoryPurpose,
+)
 
 SCHEMA_VERSION = 1
 
@@ -32,6 +37,10 @@ def load_config(path: Path) -> RepositoryConfig:
 
     repository = _table(raw.get("repository"), "repository")
     quality = _table(raw.get("quality"), "quality")
+    documentation_value = raw.get("documentation")
+    documentation = (
+        {} if documentation_value is None else _table(documentation_value, "documentation")
+    )
 
     purpose_value = _string(repository, "purpose")
     try:
@@ -58,12 +67,24 @@ def load_config(path: Path) -> RepositoryConfig:
         _optional_string(quality, "ci_workflow") or ".github/workflows/quality.yml",
         "quality.ci_workflow",
     )
+    readme_sections = _section_sequence(
+        documentation.get("readme_sections", []),
+        "documentation.readme_sections",
+    )
+    agents_sections = _section_sequence(
+        documentation.get("agents_sections", []),
+        "documentation.agents_sections",
+    )
 
     return RepositoryConfig(
         schema_version=SCHEMA_VERSION,
         purpose=purpose,
         package_name=package_name,
         required_paths=required_paths,
+        documentation=DocumentationConfig(
+            readme_sections=readme_sections,
+            agents_sections=agents_sections,
+        ),
         quality=QualityConfig(commands=commands, ci_workflow=ci_workflow),
     )
 
@@ -96,6 +117,15 @@ def _string_sequence(value: object, name: str) -> Sequence[str]:
     if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
         raise ConfigError(f"{name} must be an array of strings")
     return tuple(str(item) for item in value)
+
+
+def _section_sequence(value: object, name: str) -> tuple[str, ...]:
+    sections = tuple(item.strip() for item in _string_sequence(value, name))
+    if any(not section for section in sections):
+        raise ConfigError(f"{name} must not contain empty section names")
+    if len({section.casefold() for section in sections}) != len(sections):
+        raise ConfigError(f"{name} must not contain duplicate section names")
+    return sections
 
 
 def _relative_path(value: str, name: str) -> Path:
