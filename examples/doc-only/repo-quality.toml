@@ -1,0 +1,13 @@
+schema_version = 1
+
+[repository]
+purpose = "doc-only"
+required_paths = ["CONTRIBUTING.md"]
+
+[quality]
+ci_workflow = ".github/workflows/quality.yml"
+commands = [
+  "uv run check-docs-format",
+  "uv run check-docs-links",
+  "uv run build-docs",
+]

@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.python-version.local
+
+# Environments and tool caches
+.venv/
+.coverage
+.coverage.*
+.pytest_cache/
+.ruff_cache/
+.ty_cache/
+htmlcov/
+
+# Build output
+build/
+dist/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local secrets and overrides
+.env
+.env.*
+!.env.example
+*.local.toml

@@ -1,0 +1,21 @@
+# Security Policy
+
+## Supported Versions
+
+Security fixes apply to the latest release and the `main` branch.
+
+## Reporting A Vulnerability
+
+Do not open a public issue for a suspected vulnerability or exposed secret. Use
+GitHub's private vulnerability reporting for this repository. If that feature is
+unavailable, contact the repository owner privately through the contact method
+on the owner's GitHub profile.
+
+Include the affected version, reproduction steps, expected impact, and any known
+workaround. Do not include real credentials or sensitive production data.
+
+## Security Boundary
+
+The `repo-quality` CLI reads repository files and reports findings. It does not
+execute commands declared in `repo-quality.toml`, install dependencies, access
+the network, or modify the target repository.

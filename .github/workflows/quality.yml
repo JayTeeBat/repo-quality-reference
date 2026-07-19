@@ -1,0 +1,57 @@
+name: Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Python quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+        with:
+          version: "0.8.22"
+          enable-cache: true
+
+      - name: Install Python
+        run: uv python install
+
+      - name: Sync locked dependencies
+        run: uv sync --locked --all-groups
+
+      - name: Run pre-commit
+        run: uv run pre-commit run --all-files
+
+      - name: Check formatting
+        run: uv run ruff format --check .
+
+      - name: Run lint checks
+        run: uv run ruff check .
+
+      - name: Run static type checks
+        run: uv run ty check
+
+      - name: Run tests
+        run: uv run pytest
+
+      - name: Check repository conformance
+        run: uv run repo-quality check .
+
+      - name: Build distribution
+        run: uv build

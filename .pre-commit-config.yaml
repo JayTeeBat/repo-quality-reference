@@ -1,0 +1,62 @@
+repos:
+  - repo: local
+    hooks:
+      - id: check-yaml
+        name: Check YAML
+        entry: uv run check-yaml
+        language: system
+        types: [yaml]
+      - id: check-toml
+        name: Check TOML
+        entry: uv run check-toml
+        language: system
+        types: [toml]
+      - id: check-json
+        name: Check JSON
+        entry: uv run check-json
+        language: system
+        types: [json]
+      - id: trailing-whitespace
+        name: Trim trailing whitespace
+        entry: uv run trailing-whitespace-fixer
+        language: system
+        types: [text]
+      - id: end-of-file-fixer
+        name: Fix final newlines
+        entry: uv run end-of-file-fixer
+        language: system
+        types: [text]
+      - id: check-merge-conflict
+        name: Check merge conflict markers
+        entry: uv run check-merge-conflict
+        language: system
+      - id: check-case-conflict
+        name: Check case conflicts
+        entry: uv run check-case-conflict
+        language: system
+      - id: detect-private-key
+        name: Detect private keys
+        entry: uv run detect-private-key
+        language: system
+        types: [text]
+      - id: detect-secrets
+        name: Detect secrets
+        entry: uv run detect-secrets-hook
+        language: system
+        types: [text]
+      - id: check-added-large-files
+        name: Prevent oversized files
+        entry: uv run check-added-large-files --maxkb=1024
+        language: system
+      - id: ruff-check
+        name: Ruff check
+        entry: uv run ruff check --fix --force-exclude
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      - id: ruff-format
+        name: Ruff format
+        entry: uv run ruff format --force-exclude
+        language: system
+        types_or: [python, pyi]
+        require_serial: true

@@ -1,0 +1,25 @@
+schema_version = 1
+
+[repository]
+purpose = "python-single"
+package = "repo_quality"
+required_paths = [
+  "CHANGELOG.md",
+  "CONTRIBUTING.md",
+  "LICENSE",
+  "SECURITY.md",
+  "docs/adr",
+  "examples",
+]
+
+[quality]
+ci_workflow = ".github/workflows/quality.yml"
+commands = [
+  "uv run pre-commit run --all-files",
+  "uv run ruff format --check .",
+  "uv run ruff check .",
+  "uv run ty check",
+  "uv run pytest",
+  "uv run repo-quality check .",
+  "uv build",
+]

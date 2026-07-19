@@ -1,0 +1,16 @@
+schema_version = 1
+
+[repository]
+purpose = "python-workspace"
+required_paths = ["CONTRIBUTING.md", "SECURITY.md", "docs/adr"]
+
+[quality]
+ci_workflow = ".github/workflows/quality.yml"
+commands = [
+  "uv run pre-commit run --all-files",
+  "uv run ruff format --check .",
+  "uv run ruff check .",
+  "uv run ty check",
+  "uv run pytest",
+  "uv build --all-packages",
+]
