@@ -2,7 +2,7 @@ schema_version = 1
 
 [repository]
 purpose = "doc-only"
-required_paths = ["CONTRIBUTING.md"]
+required_paths = ["CONTRIBUTING.md", "mkdocs.yml"]
 
 [documentation]
 readme_sections = ["Purpose", "Navigation", "Contributing"]

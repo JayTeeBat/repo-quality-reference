@@ -29,6 +29,7 @@ runbooks, architecture guidance, or a knowledge base.
 |-- tools/                    # optional Python doc tooling
 |-- AGENTS.md
 |-- README.md
+|-- mkdocs.yml                # when a documentation site is built
 |-- pyproject.toml            # when Python tooling is used
 `-- uv.lock                   # when Python tooling is used
 ```

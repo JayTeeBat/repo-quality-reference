@@ -35,14 +35,19 @@ must surface ambiguous policy rather than invent it.
 
 Run from the repository root:
 
-1. `uv sync --locked --all-groups`
-2. `uv run pre-commit run --all-files`
-3. `uv run ruff format --check .`
-4. `uv run ruff check .`
-5. `uv run ty check`
-6. `uv run pytest`
-7. `uv run repo-quality check .`
-8. `uv build`
+```bash
+uv sync --locked --all-groups
+uv run pre-commit run --all-files
+uv run ruff format --check .
+uv run ruff check .
+uv run ty check
+uv run pytest
+uv run repo-quality check .
+uv run check-docs-format
+uv run check-docs-links
+uv run build-docs
+uv build
+```
 
 CI must run the same validation commands. Do not bypass a failed gate or edit
 generated files to hide a mismatch.

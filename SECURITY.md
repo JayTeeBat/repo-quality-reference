@@ -19,3 +19,9 @@ workaround. Do not include real credentials or sensitive production data.
 The `repo-quality` CLI reads repository files and reports findings. It does not
 execute commands declared in `repo-quality.toml`, install dependencies, access
 the network, or modify the target repository.
+
+`check-docs-links` makes outbound HEAD or GET requests to HTTP(S) targets found
+in Markdown unless `--no-external` is set. `build-docs` runs MkDocs and replaces
+the configured site output directory, which is `site/` in this repository.
+Review configuration and link targets before running these commands against an
+untrusted repository.

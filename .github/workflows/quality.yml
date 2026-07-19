@@ -53,5 +53,14 @@ jobs:
       - name: Check repository conformance
         run: uv run repo-quality check .
 
+      - name: Check documentation formatting
+        run: uv run check-docs-format
+
+      - name: Check documentation links
+        run: uv run check-docs-links
+
+      - name: Build documentation
+        run: uv run build-docs
+
       - name: Build distribution
         run: uv build

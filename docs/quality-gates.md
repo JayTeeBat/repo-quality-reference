@@ -73,6 +73,21 @@ A documentation repository MUST define equivalents for:
 The exact tools are repository decisions. Python-based tooling managed through
 `uv` is preferred to preserve the default ecosystem and a single lock file.
 
+This reference package provides a maintained default command set:
+
+```bash
+uv run check-docs-format
+uv run check-docs-links
+uv run build-docs
+```
+
+`check-docs-format` runs mdformat in check mode with consistent ordered-list
+numbering. `check-docs-links` validates local targets and heading fragments,
+checks each unique external HTTP(S) target, and retries transient failures twice.
+Repositories MAY exclude a known external URL prefix with
+`--exclude-url-prefix` when the exception is intentional and visible in the CI
+command. `build-docs` runs a strict MkDocs build using `mkdocs.yml`.
+
 ## Conditional Gates
 
 Add these only when the repository has the associated failure mode:
