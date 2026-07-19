@@ -13,15 +13,18 @@ templates can also appear authoritative even when their rationale changes.
 
 The repository will be a Python single-package project that implements a
 read-only `repo-quality check` command. A small TOML contract declares the
-profile, required paths, quality commands, and CI workflow. Tests require this
-repository to pass its own checks.
+profile, required paths, optional document headings, quality commands, and CI
+workflow. Tests require this repository to pass its own checks.
 
 The checker will not execute configured commands. CI remains responsible for
-running them.
+running them. It will not infer document meaning through synonyms or language
+models; qualitative content remains a review responsibility.
 
 ## Consequences
 
 - Structural, internal-link, and CI-command drift fail visibly.
+- Repositories can enforce their own headings without inheriting this
+  reference's vocabulary.
 - The repository demonstrates the Python gates it mandates.
 - Content quality and proportionality still require human review.
 - The configuration schema becomes a compatibility surface.

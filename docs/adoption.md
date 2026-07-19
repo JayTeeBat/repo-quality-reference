@@ -4,14 +4,16 @@
 
 1. Select a profile from `docs/repository-shapes.md`.
 2. Copy the matching `repo-quality.toml` from `examples/`.
-3. Replace example names and add justified required paths.
+3. Replace example names, choose local document-section requirements, and add
+   justified required paths.
 4. Write the README for users and `AGENTS.md` for safe changes.
 5. Add local hooks and CI with the same authoritative commands.
 6. Run `repo-quality check .` and the full gate chain.
 7. Protect `main` once CI exists.
 
 Do not copy the entire reference repository. Adopt the contract and only the
-files that serve the target repository.
+files that serve the target repository. Remove example `[documentation]`
+headings that do not match the target repository's natural vocabulary.
 
 ## Existing Repository
 

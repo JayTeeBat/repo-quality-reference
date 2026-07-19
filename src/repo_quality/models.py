@@ -22,6 +22,14 @@ class QualityConfig:
 
 
 @dataclass(frozen=True, slots=True)
+class DocumentationConfig:
+    """Optional document sections explicitly required by a repository."""
+
+    readme_sections: tuple[str, ...] = ()
+    agents_sections: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
 class RepositoryConfig:
     """Parsed ``repo-quality.toml`` contract."""
 
@@ -30,6 +38,7 @@ class RepositoryConfig:
     package_name: str | None
     required_paths: tuple[Path, ...]
     quality: QualityConfig
+    documentation: DocumentationConfig = DocumentationConfig()
 
 
 @dataclass(frozen=True, slots=True)

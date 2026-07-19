@@ -32,6 +32,11 @@ uvx --from git+https://github.com/JayTeeBat/repo-quality-reference.git \
   repo-quality check /path/to/repository
 ```
 
+Document headings are repository-owned. Add an optional `[documentation]`
+table when exact README or `AGENTS.md` sections are part of the local contract;
+otherwise the checker only requires non-empty documents with valid internal
+links.
+
 ## Repository Shapes
 
 | Purpose | Use when | Canonical content |

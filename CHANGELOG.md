@@ -12,3 +12,10 @@ semantic versioning once the first stable release is published.
   repositories.
 - Self-auditing `repo-quality check` CLI.
 - Golden-reference CI, tests, contributor guidance, and security policy.
+
+### Changed
+
+- Made README and `AGENTS.md` section requirements optional and
+  repository-owned through `[documentation]`.
+- Kept universal document checks limited to presence, non-empty content, and
+  valid internal links.
