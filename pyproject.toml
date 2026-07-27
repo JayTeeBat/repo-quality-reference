@@ -25,7 +25,7 @@ repo-quality = "repo_quality.cli:main"
 [dependency-groups]
 dev = [
   "detect-secrets>=1.5.0,<2",
-  "pre-commit>=4.2.0,<5",
+  "pre-commit>=4.6.1,<5",
   "pre-commit-hooks>=6.0.0,<7",
   "pytest>=9.1.1,<10",
   "ruff>=0.15.22,<0.16",
