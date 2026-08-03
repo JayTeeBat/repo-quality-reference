@@ -9,7 +9,7 @@ authors = [
   { name = "Jacques Thomazo" },
 ]
 dependencies = [
-  "markdown>=3.10,<4",
+  "markdown>=3.10.3,<4",
   "markdown-it-py>=3.0.0,<5",
   "mdformat>=1.0.0,<2",
   "mkdocs>=1.6.1,<2",
